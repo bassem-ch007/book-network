@@ -1,0 +1,48 @@
+.main-frame {
+  min-height: 100vh;
+  background-color: #e9f0f7; /* soft blue background for the app */
+}
+
+.content {
+  background-color: #ffffff; /* keep content white for contrast */
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  padding: 20px;
+  margin-top: 10px;
+  min-height: 70vh;
+  transition: all 0.3s ease;
+  color: #333333; /* default text color */
+}
+
+/* Add subtle accent to headings inside content */
+.content h1, .content h2, .content h3 {
+  color: #1a73e8; /* nice blue accent for headings */
+}
+
+/* Buttons in content */
+.content .btn-primary {
+  background-color: #1a73e8;
+  border-color: #1a73e8;
+}
+
+.content .btn-primary:hover {
+  background-color: #155ab6;
+  border-color: #155ab6;
+}
+
+/* Optional: links inside content */
+.content a {
+  color: #1a73e8;
+}
+
+.content a:hover {
+  color: #155ab6;
+}
+
+/* Responsive padding */
+@media (max-width: 768px) {
+  .content {
+    padding: 15px;
+    margin-top: 5px;
+  }
+}

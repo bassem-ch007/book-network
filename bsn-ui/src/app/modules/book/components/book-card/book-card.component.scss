@@ -1,0 +1,39 @@
+i {
+  position: relative;
+  cursor: pointer;
+
+  &:hover {
+    text-shadow:
+      0 0 4px rgba(0,0,0,0.44),
+      0 0 8px rgba(0,198,216,0.21);
+  }
+
+  &::after {
+    content: attr(data-tooltip); /* tooltip comes from HTML */
+    position: absolute;
+    top: -150%; /* put above */
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.85);;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.1s ease;
+    font-weight: 400;
+    font-size: 12px;
+    z-index: 1000;
+  }
+
+  &:hover::after {
+    opacity: 1;
+  }
+}
+
+div{
+  &.card{
+    max-height:450px;
+    min-height: 450px;}
+}

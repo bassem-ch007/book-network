@@ -1,0 +1,58 @@
+<h1>My book list</h1>
+<hr>
+<div class="col-12 d-flex justify-content-end align-items-center mb-3 gap-3">
+  <span class="text-warning d-flex align-items-center">
+    <i class="fas fa-info-circle me-1"></i> Archived Book
+  </span>
+  <span class="text-success d-flex align-items-center">
+    <i class="fas fa-info-circle me-1"></i> Shareable Book
+  </span>
+  <a routerLink="book-manage" class="btn btn-outline-primary d-flex align-items-center">
+    <i class="fas fa-plus me-1"></i> New Book
+  </a>
+</div>
+<hr>
+<div class="d-flex justify-content-center gap-2 flex-wrap">
+  <app-book-card
+    *ngFor="let book of bookResponse.content"
+    [book]="book"
+    [successMsg]="successMessages.get(book.id!)"
+    [errorMsg]="errorMessages.get(book.id!)"
+    [manage]="true"
+    [bookCover]="book.cover"
+    (archive)="archiveBook($event)"
+    (edit)="editBook($event)"
+    (share)="shareBook($event)"
+  ></app-book-card>
+</div>
+<div class="d-flex justify-content-center mt-3">
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item ">
+        <a (click)="goToFirstPage()" aria-label="previous" href="javascript:void(0)" class="page-link" [class.disabled]="page==0" >
+          <i class="fa-solid fa-angles-left "></i>
+        </a>
+      </li>
+      <li class="page-item ">
+        <a (click)="goToPreviousPage()" aria-label="previous" href="javascript:void(0)" class="page-link" [class.disabled]="page==0">
+          <i class="fa-solid fa-angle-left "></i>
+        </a>
+      </li>
+      <li class="page-item" *ngFor="let _ of [].constructor(bookResponse.totalPages) let i=index">
+        <a (click)="goToPage(i)" aria-label="IndexedPosition" href="javascript:void(0)" class="page-link " [class.active]="page==i">
+          {{i+1}}
+        </a>
+      </li>
+      <li class="page-item ">
+        <a (click)="goToNextPage()" aria-label="next" href="javascript:void(0)" class="page-link" [class.disabled]="isLastPage()">
+          <i class="fa-solid fa-angle-right "></i>
+        </a>
+      </li>
+      <li class="page-item ">
+        <a (click)="goToLastPage()" aria-label="next" href="javascript:void(0)" class="page-link" [class.disabled]="isLastPage()">
+          <i class="fa-solid fa-angles-right "></i>
+        </a>
+
+    </ul>
+  </nav>
+</div>

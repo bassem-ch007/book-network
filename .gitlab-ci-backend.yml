@@ -1,0 +1,60 @@
+stages:
+  - build
+  - docker
+
+variables:
+  DOCKER_IMAGE: bassem00/bsn-backend
+  PROFILE: prod
+
+# --- Trigger pipeline only on relevant changes ---
+workflow:
+  rules:
+    - changes:
+        - src/main/**               # anything under src/main
+        - docker/backend/Dockerfile
+        - pom.xml
+        - docker-compose.yml
+
+# ---- Build Stage ----
+build:
+  stage: build
+  image: maven:3.9.9-eclipse-temurin-17
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - .m2/repository            # cache Maven dependencies
+  script:
+    - echo "Downloading dependencies..."
+    - mvn dependency:go-offline
+    - echo "Packaging code..."
+    - mvn clean package -DskipTests
+    - echo "APP_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> variables.env
+  artifacts:
+    paths:
+      - target/*.jar                 # pass built JAR to next stage
+    expire_in: 24h
+    reports:
+      dotenv: variables.env
+  only:
+    - master
+
+# ---- Docker Stage ----
+docker-build:
+  stage: docker
+  image: docker:24.0.5
+  services:
+    - docker:24.0.5-dind
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+    DOCKER_BUILDKIT: "1"   # faster Docker builds
+  before_script:
+    - echo "Using Docker Hub user:$DOCKERHUB_USERNAME"
+    - echo "$DOCKERHUB_PASSWORD" | wc -c | xargs echo "Docker Hub password length:"
+    # Use --password-stdin to avoid interactive login errors
+    - echo "$DOCKERHUB_PASSWORD" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+  script:
+    - docker build -t $DOCKER_IMAGE:$APP_VERSION --build-arg APP_VERSION=$APP_VERSION --build-arg PROFILE=$PROFILE --build-arg DB_URL=$DB_URL --build-arg EMAIL_HOSTNAME=$EMAIL_HOSTNAME --build-arg EMAIL_USER_NAME=$EMAIL_USER_NAME -f docker/backend/Dockerfile .
+    - docker push $DOCKER_IMAGE:$APP_VERSION
+  only:
+    - master
+

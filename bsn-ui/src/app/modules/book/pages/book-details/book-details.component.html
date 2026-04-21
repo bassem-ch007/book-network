@@ -1,0 +1,50 @@
+<div class="p-4 card shadow-sm">
+  <h2 class="mb-3">Book Details</h2>
+  <hr>
+
+  <!-- Error messages -->
+  <div *ngIf="errorMessage?.length" class="alert alert-info mt-2">
+    <p *ngFor="let msg of errorMessage" class="m-0">
+      {{ msg }}
+    </p>
+  </div>
+
+  <div class="row g-3 mt-3">
+    <!-- Book Cover -->
+    <div class="col-md-3">
+      <img
+        [src]="bookCoverString || 'https://i.etsystatic.com/16946144/r/il/f766e9/2185405359/il_570xN.2185405359_c7zq.jpg'"
+        class="img-fluid rounded-2 shadow-sm"
+        alt="Book Cover"
+      />
+    </div>
+
+    <!-- Book Details -->
+    <div class="col-md-9 d-flex flex-column gap-2">
+      <div><strong>Title:</strong> {{ bookRequest.title }}</div>
+      <div><strong>Author:</strong> {{ bookRequest.author }}</div>
+      <div><strong>ISBN:</strong> {{ bookRequest.isbn }}</div>
+      <div><strong>Synopsis:</strong></div>
+      <p class="ms-2">{{ bookRequest.synopsis }}</p>
+      <div><strong>Shareable:</strong> {{ bookRequest.shareable ? 'Yes' : 'No' }}</div>
+      <div class="d-flex gap-2">
+        <i *ngIf="isWaitingList"
+           (click)="onAddToWaitingList()"
+           class="fas fa-heart text-danger"
+           [attr.data-tooltip]="'remove from waiting list'">
+        </i>
+        <i *ngIf="!isWaitingList"
+           (click)="onAddToWaitingList()"
+           class="fas fa-heart text-secondary"
+           [attr.data-tooltip]="'Add to waiting list'">
+        </i>
+      </div>
+      <!-- Return Button -->
+      <div class="mt-auto d-flex justify-content-end">
+        <a (click)="returnBack()" class="btn btn-outline-danger">
+          <i class="fas fa-times"></i>&nbsp;Return
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

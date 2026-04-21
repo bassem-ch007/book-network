@@ -1,0 +1,11 @@
+.pagination {
+  bottom: 0;         /* bottom of the screen */
+  left: 0;
+  width: 100%;       /* full width */
+  display: flex;
+  justify-content: center; /* center it horizontally */
+  background: #fff;  /* optional: give it a background */
+  padding: 10px 0;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1); /* optional shadow */
+  z-index: 1000;      /* stay on top */
+}

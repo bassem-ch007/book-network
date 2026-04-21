@@ -1,0 +1,51 @@
+li >a{
+  &:hover{
+    background-color: #b6c7d4;
+    border-radius: 5px;
+    text-decoration: underline;}
+  &.active{
+    color: #24a7e9;
+    border-radius: 6px;
+  }
+}
+.book-search-container {
+  max-width: 400px;
+}
+
+.dropdown-menu {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.dropdown-item:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+.text-muted {
+  font-size: 0.8rem;
+}
+.book-search-container {
+  position: relative; // keeps input in flow
+}
+
+.autocomplete-dropdown {
+  position: absolute;
+  top: 100%;           // directly below input container
+  left: 0;
+  width: 100%;         // match input width
+  margin-top: 0.5rem;  // spacing from input (or menu bar)
+  background: #fff;
+  border-radius: 8px;
+  max-height: 250px;
+  overflow-y: auto;
+  z-index: 1050;       // above menu bar
+}
+
+.dropdown-item {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  &:hover {
+    background-color: #24a7e9;
+  }
+}

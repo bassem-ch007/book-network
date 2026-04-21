@@ -1,0 +1,98 @@
+<div>
+  <h2>My Book Returns</h2>
+  <hr>
+  <div *ngIf="messages?.length">
+    <div
+      class="alert mt-2"
+      [ngClass]="{'alert-success': messageLevel === 'success', 'alert-danger': messageLevel === 'error'}"
+      role="alert">
+      <p class="p-0 m-0" *ngFor="let msg of messages">
+        {{msg}}
+      </p>
+    </div>
+  </div>
+  <div class="table-wrapper" >
+    <table class="table content">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+        <th scope="col">Author</th>
+        <th scope="col">ISBN</th>
+        <th scope="col">Rate</th>
+        <th scope="col">Returned</th>
+        <th scope="col">Approval(Click)</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let BorrowedBook of returnedBooksPage.content; let index = index">
+        <td>{{ index + 1 }}</td>
+        <td>{{ BorrowedBook.title }}</td>
+        <td>{{ BorrowedBook.author }}</td>
+        <td>{{ BorrowedBook.isbn }}</td>
+
+        <!-- Rate column with star and numeric value -->
+        <td>
+          <i class="fas fa-star text-warning"></i>&nbsp;{{ BorrowedBook.rate }}
+        </td>
+
+        <!-- Return column -->
+        <td>
+          <i *ngIf="BorrowedBook.returned"
+             class="fa fa-regular fa-paper-plane text-success"
+             [attr.data-tooltip]="'Already returned'">
+          </i>
+          <i *ngIf="!BorrowedBook.returned"
+             class="fa fa-regular fa-paper-plane text-warning"
+             [attr.data-tooltip]="'Click to return the book'">
+          </i>
+        </td>
+
+        <!-- Approval column -->
+        <td>
+          <i *ngIf="BorrowedBook.returnedApproved"
+             class="fa fa-regular fa-circle-check text-success"
+             [attr.data-tooltip]="'You have approved the return of this book.'">
+          </i>
+          <i *ngIf="!BorrowedBook.returnedApproved && BorrowedBook.returned"
+             (click)="approveBorrowedBook(BorrowedBook)"
+             class="fa fa-regular fa-circle-check text-warning"
+             [attr.data-tooltip]="'Click here to approve the return of your book.'">
+          </i>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="pagination d-flex justify-content-center mt-3">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item ">
+          <a (click)="goToFirstPage()" aria-label="previous" href="javascript:void(0)" class="page-link" [class.disabled]="page==0" >
+            <i class="fa-solid fa-angles-left "></i>
+          </a>
+        </li>
+        <li class="page-item ">
+          <a (click)="goToPreviousPage()" aria-label="previous" href="javascript:void(0)" class="page-link" [class.disabled]="page==0">
+            <i class="fa-solid fa-angle-left "></i>
+          </a>
+        </li>
+        <li class="page-item" *ngFor="let _ of [].constructor(returnedBooksPage.totalPages) let i=index">
+          <a (click)="goToPage(i)" aria-label="IndexedPosition" href="javascript:void(0)" class="page-link " [class.active]="page==i">
+            {{i+1}}
+          </a>
+        </li>
+        <li class="page-item ">
+          <a (click)="goToNextPage()" aria-label="next" href="javascript:void(0)" class="page-link" [class.disabled]="isLastPage()">
+            <i class="fa-solid fa-angle-right "></i>
+          </a>
+        </li>
+        <li class="page-item ">
+          <a (click)="goToLastPage()" aria-label="next" href="javascript:void(0)" class="page-link" [class.disabled]="isLastPage()">
+            <i class="fa-solid fa-angles-right "></i>
+          </a>
+
+      </ul>
+    </nav>
+  </div>
+</div>

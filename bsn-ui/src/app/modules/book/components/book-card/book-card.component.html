@@ -1,0 +1,60 @@
+<div class="card border-2" style="width:20rem;"
+     [class.border-success]="book.shareable"
+     [class.border-warning]="book.archived"
+>
+  <img height="200" [src]="bookCover"  class="card-img-top" alt="...">
+  <div class="card-body overflow-scroll">
+    <h6 class="card-title fs-6 text-nowrap fw-bold mb-2"><i [attr.data-tooltip]="'Title'" class="fa-solid fa-book"></i>&nbsp;{{book.title}}</h6>
+    <h5 class="card-subtitle fs-6 text-secondary mb-2"><i [attr.data-tooltip]="'Author'" class="fa-solid fa-user-check"></i>&nbsp;{{book.author}}</h5>
+    <h6 class="card-subtitle fs-6 text-secondary mb-2"><i [attr.data-tooltip]="'ISBN'" class="fas fa-code"></i>&nbsp;{{book.isbn}}</h6>
+    <h6 class="card-subtitle fs-6 text-secondary"><i [attr.data-tooltip]="'Owner'" class="fas fa-user"></i>&nbsp;{{book.owner}}</h6>
+    <hr>
+    <p class="card-text">{{book.synopsis}}</p>
+  </div>
+  <div class="card-footer d-flex gap-2 justify-content-between align-items-center">
+    <div class="d-flex gap-2">
+      <app-rating [rating]="book.rate || 0"></app-rating>
+      <span class="fw-bold" *ngIf="book.rate || 0 > 0">{{book.rate}}</span>
+    </div>
+    <div class="d-flex gap-2" *ngIf="!manage">
+      <i (click)="onShowDetails()"
+         class="fas fa-circle-info text-primary link-underline-opacity-100-hover"
+         [attr.data-tooltip]="'Show details'"></i>
+
+      <i (click)="onBorrow()"
+         class="fas fa-list-check text-primary"
+         [attr.data-tooltip]="'Borrow this book'"></i>
+      <i *ngIf="isWaitingList"
+         (click)="onAddToWaitingList()"
+         class="fas fa-heart text-danger"
+         [attr.data-tooltip]="'remove from waiting list'">
+      </i>
+      <i *ngIf="!isWaitingList"
+         (click)="onAddToWaitingList()"
+         class="fas fa-heart text-secondary"
+         [attr.data-tooltip]="'Add to waiting list'">
+      </i>
+    </div>
+
+    <!-- Admin/Manage view -->
+    <div class="d-flex gap-2" *ngIf="manage">
+      <i (click)="onEdit()"
+         class="fas fa-edit text-success"
+         [attr.data-tooltip]="'Edit book'"></i>
+
+      <i (click)="onShare()"
+         class="fas fa-share-nodes text-primary"
+         [attr.data-tooltip]="'Share book'"></i>
+
+      <i (click)="onArchive()"
+         class="fa-solid fa-archive text-danger"
+         [attr.data-tooltip]="'Archive book'"></i>
+    </div>
+  </div>
+  <div *ngIf="successMsg" class="alert alert-success mt-2 p-2">
+    {{ successMsg }}
+  </div>
+  <div *ngIf="errorMsg" class="alert alert-danger mt-2 p-2">
+    {{ errorMsg }}
+  </div>
+</div>

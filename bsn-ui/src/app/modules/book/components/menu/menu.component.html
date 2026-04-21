@@ -1,0 +1,80 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <!-- Brand -->
+    <a class="navbar-brand" href="javascript:void(0)">BSN</a>
+
+    <!-- Toggler -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- NAV LINKS -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/books">
+            <i class="fas fa-home-alt"></i>&nbsp;Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="my-books">
+            <i class="fas fa-book"></i>&nbsp;My books
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="my-waiting-list">
+            <i class="fas fa-heart"></i>&nbsp;My waiting list
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="my-returned-books">
+            <i class="fas fa-hands-helping"></i>&nbsp;My returned books
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="my-borrowed-books">
+            <i class="fas fa-book-open"></i>&nbsp;My borrowed books
+          </a>
+        </li>
+      </ul>
+
+      <!-- SEARCH -->
+      <div class="book-search-container position-relative me-3">
+        <div *ngIf="showSearchForm" class="d-flex align-items-center gap-2">
+          <input type="text"
+                 class="form-control"
+                 placeholder="Search books..."
+                 [(ngModel)]="query"
+                 (input)="onInputChange()"
+                 (focus)="dropdownVisible = true"
+                 (blur)="hideDropdownWithDelay()">
+
+          <i class="fas fa-search cursor-pointer" (click)="onSearchClick()"></i>
+
+          <ul *ngIf="dropdownVisible && suggestions.length"
+              class="autocomplete-dropdown list-unstyled shadow">
+            <li *ngFor="let book of suggestions"
+                class="dropdown-item d-flex flex-column"
+                (mousedown)="openBookDetail(book.id)">
+              <strong>{{ book.title }}</strong> by <em>{{ book.author }}</em>
+              <small class="text-muted">{{ book.synopsis }}</small>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- USER INFO -->
+      <div class="d-flex gap-2 align-items-center">
+        <span class="ms-2">Welcome</span>
+        <span class="text-capitalize fw-bold text-nowrap ms-1">{{ fullName }}</span>
+        <button class="btn btn-link" type="button" (click)="logout()">
+          <i class="fas fa-door-open"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>

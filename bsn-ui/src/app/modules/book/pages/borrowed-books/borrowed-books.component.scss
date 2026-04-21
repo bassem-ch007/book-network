@@ -1,0 +1,73 @@
+/* ---------------- Tooltips for icons ---------------- */
+i.fa-paper-plane,
+i.fa-circle-check {
+  position: relative;
+  cursor: pointer;
+
+  &:hover {
+    text-shadow:
+      0 0 4px rgba(0,0,0,0.44),
+      0 0 8px rgba(0,198,216,0.21);
+  }
+
+  &::after {
+    content: attr(data-tooltip); /* dynamically read tooltip from HTML */
+    position: absolute;
+    bottom: 150%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.1s ease;
+    font-size: 12px;
+    font-weight: 400;
+    font-family: Arial, sans-serif;
+    z-index: 1000;
+  }
+
+  &:hover::after {
+    opacity: 1;
+  }
+}
+
+/* ---------------- Sticky Pagination ---------------- */
+.pagination {
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  justify-content: center;
+  z-index: 1000;              /* stay on top */
+}
+
+/* ---------------- Scrollable Table ---------------- */
+.table-wrapper {
+  width: 100%;             /* full width of container */
+  overflow: visible;       /* no scrollbars */
+}
+
+.table.content {
+  table-layout: fixed;     /* fixed column widths */
+  width: 100%;
+}
+
+/* ---------------- Table Cells ---------------- */
+.table.content th,
+.table.content td {
+  white-space: normal;        /* allow wrapping */
+  word-break: break-word;
+  overflow-wrap: break-word;
+  vertical-align: middle;     /* vertical center for multi-line content */
+  padding: 8px;               /* optional padding */
+}
+
+/* ---------------- Flex for icons in cells ---------------- */
+.table.content td > .d-flex {
+  display: flex;
+  align-items: center;        /* vertically center icons */
+  gap: 0.5rem;                /* spacing between icons */
+}

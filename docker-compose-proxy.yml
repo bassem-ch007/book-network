@@ -1,0 +1,51 @@
+services:
+  postgres:
+    container_name: postgres-sql-bsn
+    image: postgres
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: book_social_network
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - bsn_postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - spring-demo
+    restart: unless-stopped
+  frontend:
+    container_name: bsn-ui
+    image: proxy/front:1.0.0
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+    networks:
+      - spring-demo
+  backend:
+    container_name: bsn-api
+    image: proxy/back:1.0.0
+    ports:
+      - "8088:8088"
+    networks:
+      - spring-demo
+    depends_on:
+      - postgres
+  proxy:
+    container_name: bsn-proxy
+    image: bsn/proxy:1.0.0
+    ports:
+      - "2222:80"  # expose only this one for ngrok
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - spring-demo
+volumes:
+  bsn_postgres:
+    driver: local
+
+networks:
+  spring-demo:
+    driver: bridge
